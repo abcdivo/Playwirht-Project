@@ -1,18 +1,25 @@
 import { test, expect } from '@playwright/test';
+import { RegisterPage } from '../pages/register.page';
+import { HomePage } from '../pages/home.page';
 
 test('Register with valid credentials', async ({ page }) => {
-  await page.goto('https://www.emra.chat/login');
-  await page.getByRole('link', { name: 'Sign up' }).click();
-  await page.getByRole('textbox', { name: 'Email' }).fill('customerdata02@yopmail.com');
-  await page.getByRole('textbox', { name: 'Password', exact: true }).fill('Bekasi123');
-  await page.getByRole('textbox', { name: 'Confirm Password' }).fill('Bekasi123');
-  await page.getByRole('button', { name: 'Next' }).click();
-  await page.getByRole('textbox', { name: 'Full Name' }).fill('Pane A');
-  await page.getByRole('textbox', { name: 'Phone Number' }).fill('82156342211');
-  await page.getByRole('button', { name: 'Next' }).click();
-  await page.getByRole('textbox', { name: 'Company Name' }).fill('MASI');
-  await page.getByLabel('Industry').selectOption('finance');
-  await page.getByLabel('Company Size').selectOption('200+');
-  await page.getByRole('button', { name: 'Create Account' }).click();
+  await page.goto('https://www.emra.chat/signup');
+  
+  const registerPage = new RegisterPage(page)
+  const homePage = new HomePage(page)
+  const email = 'customerdata11@yopmail.com'
+  const password = 'Testing1234'
+  const confirmPassword = 'Testing1234'
+  const fullName = 'Fikrial Pane A'
+  //const country ='Indonesia'
+  const phoneNumber = '82143546623'
+  const companyName = 'Bank Jawa Barat'
+  const industry = 'finance'
+  const companySize = '51-200'
+
+  await registerPage.RegisterAs(email,password,confirmPassword,fullName,
+    //country,
+    phoneNumber,companyName,industry,companySize)
+
   await expect(page.getByText('Please verify your email')).toBeVisible();
 });
